@@ -55,19 +55,31 @@ app.post("/salvar-pergunta", (req, res) => {
     });
 });
 
-app.get("/pergunta/:id", (req,res) => {
+app.get("/pergunta/:id", (req, res) => {
     var id = req.params.id;
     Pergunta.findOne({
-        where:{id:id},
+        where: { id: id },
     }).then(pergunta => {
-        if(pergunta != undefined){
-            res.render("pergunta",{
-                pergunta:pergunta,
+        if (pergunta != undefined) {
+            res.render("pergunta", {
+                pergunta: pergunta,
             });
-        }else{
+        } else {
             res.redirect("/");
         }
     });
-})
+});
+
+//Rota para salvar Resposta e relacionar com a pergunta
+app.post("/responder", (req, res) => {
+    var corpo = req.body.corpo;
+    var perguntaId = req.body.pergunta;
+    Resposta.create({
+        corpo: corpo,
+        perguntaId: perguntaId,
+    }).then(() => {
+        res.redirect("/pergunta/" + perguntaId);
+    })
+});
 
 app.listen(8080, () => { console.log("App rodando!"); });
