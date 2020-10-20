@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const connection = require("./database/database");
 const Pergunta = require("./database/Pergunta");
-
+const Resposta = require("./database/Resposta");
 //Database
 connection
     .authenticate()
@@ -27,9 +27,12 @@ app.use(bodyParser.json());
 
 //Página Inicial
 app.get("/", (req, res) => {
-    Pergunta.findAll({ raw: true }).then(perguntas => {
+    Pergunta.findAll({
+        raw: true, order: [
+            ['id', 'DESC']],
+    }).then(perguntas => {
         res.render("index", {
-            perguntas:perguntas,
+            perguntas: perguntas,
         });
     });
 
@@ -51,5 +54,20 @@ app.post("/salvar-pergunta", (req, res) => {
         res.redirect("/");
     });
 });
+
+app.get("/pergunta/:id", (req,res) => {
+    var id = req.params.id;
+    Pergunta.findOne({
+        where:{id:id},
+    }).then(pergunta => {
+        if(pergunta != undefined){
+            res.render("pergunta",{
+                pergunta:pergunta,
+            });
+        }else{
+            res.redirect("/");
+        }
+    });
+})
 
 app.listen(8080, () => { console.log("App rodando!"); });
