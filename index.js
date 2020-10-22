@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 //Rotas
 
 //Página Inicial
-app.get("", (req, res) => {
+app.get("/", (req, res) => {
     Pergunta.findAll({
         raw: true, order: [
             ['id', 'DESC']],
