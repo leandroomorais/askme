@@ -4,6 +4,7 @@
   "description": "O projeto Askme é uma plataforma de perguntas e respostas construída com Node.js",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Leandro Morais",
